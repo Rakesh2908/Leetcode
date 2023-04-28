@@ -1,45 +1,51 @@
 class Solution {
-public:
-    vector<int> eventualSafeNodes(vector<vector<int>>& graph) 
-    {
-        int n = graph.size();
+ public:
+   vector<int> eventualSafeNodes(vector<vector<int>>& graph)
+   {
+        int n=graph.size();
         
-        vector<int> color(n);
-        vector<int> res;
+        // creating array to store the indegree
+        vector<int>indegree(n,0); 
 
-        for (int i = 0; i < n; i++) 
+// we will be reversing the edges so that we can apply toposort as toposort work on indegree.
+        vector<vector<int>>adjrev(n); 
+        
+        for(int i=0;i<n;i++)
         {
-            if (dfs(i, graph, color)) 
+            for(auto it:graph[i])
             {
-                res.push_back(i);
-            }
-        }
-        return res;
-    }
-    
-    bool dfs(int u, vector<vector<int>>& graph, vector<int>& color) 
-    {
-        if (color[u] > 0) 
-        {
-            return color[u] == 2;
-        }
-
-        color[u] = 1;
-
-        for (int v : graph[u]) 
-        {
-            if (color[v] == 2) 
-            {
-                continue;
-            }
-
-            if (color[v] == 1 || !dfs(v, graph, color)) 
-            {
-                return false;
+                adjrev[it].push_back(i);
+                indegree[i]++;
             }
         }
         
-        color[u] = 2;
-        return true;
+        queue<int>q;
+
+        for(int i=0;i<n;i++)
+        {
+            if(indegree[i]==0)
+                q.push(i);
+        }
+
+        vector<int>safenodes;
+        while(!q.empty())
+        {
+            int node=q.front();
+            q.pop();
+
+            safenodes.push_back(node);
+            
+            for(auto it:adjrev[node])
+            {
+                indegree[it]--;
+
+                if(indegree[it]==0) 
+                    q.push(it);
+            }
+            
+        }
+        
+        sort(safenodes.begin(),safenodes.end());
+        return safenodes;
     }
 };
