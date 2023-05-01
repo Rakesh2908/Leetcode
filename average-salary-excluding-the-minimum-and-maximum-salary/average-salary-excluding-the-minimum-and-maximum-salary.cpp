@@ -1,15 +1,9 @@
 class Solution {
 public:
-    double average(vector<int>& salary) 
+    double average(vector<int>& s) 
     {
-        sort(salary.begin(),salary.end());
-        
-        double ans=0;
-
-        for(int i=1;i<salary.size()-1;i++)  ans += salary[i];
-
-        ans = ans/(salary.size()-2);
-
-        return ans;
+        return ( accumulate(begin(s), end(s), 0.) 
+                - *min_element(begin(s), end(s)) 
+                - *max_element(begin(s), end(s)) ) / (s.size() - 2);
     }
 };
