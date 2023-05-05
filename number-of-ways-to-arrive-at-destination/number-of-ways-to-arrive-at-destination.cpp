@@ -1,55 +1,51 @@
 #define ll long long
-#define pll pair<ll, ll>
 class Solution {
 public:
-    int MOD = 1e9 + 7;
-    int countPaths(int n, vector<vector<int>>& roads) 
+int countPaths(int n, vector<vector<int>>& roads) 
+{
+    vector<pair<ll,ll>> adj[n];
+    for(auto it:roads)
     {
-        vector<vector<pll>> graph(n);
-        for(auto& road: roads) 
-        {
-            ll u = road[0], v = road[1], time = road[2];
-            graph[u].push_back({v, time});
-            graph[v].push_back({u, time});
-        }
-
-        return dijkstra(graph, n, 0);
+        adj[it[0]].push_back({it[1],it[2]});
+        adj[it[1]].push_back({it[0],it[2]});
     }
+    
+    priority_queue< pair<ll,ll>,
+                    vector<pair<ll,ll>>,
+                    greater<pair<ll,ll>>> pq;
 
-    int dijkstra(const vector<vector<pll>>& graph, int n, int src) 
+    vector<ll> ways(n,0),dist(n,LONG_MAX);
+
+    pq.push({0,0});
+    dist[0]=0;
+    ways[0]=1;
+    int mod=1e9+7;
+    
+    while(!pq.empty())
     {
-        vector<ll> dist(n, LONG_MAX);
-        vector<ll> ways(n);
-
-        ways[src] = 1;
-        dist[src] = 0;
-
-        priority_queue<pll, vector<pll>, greater<>> minHeap;
-        minHeap.push({0, 0}); // dist, src
-
-        while (!minHeap.empty()) 
+        ll dis=pq.top().first;
+        ll node=pq.top().second;
+        pq.pop();
+        
+        for(auto it:adj[node])
         {
-            auto[d, u] = minHeap.top(); 
-            minHeap.pop();
-
-            if (d > dist[u]) 
-                continue; 
-
-            for(auto [v, time] : graph[u]) 
+            ll adjNode=it.first;
+            ll edgeW=it.second;
+            
+            if(edgeW+dis< dist[adjNode])
             {
-                if (dist[v] > d + time) 
-                {
-                    dist[v] = d + time;
-                    ways[v] = ways[u];
-                    minHeap.push({dist[v], v});
-                } 
-                
-                else if (dist[v] == d + time) 
-                {
-                    ways[v] = (ways[v] + ways[u]) % MOD;
-                }
+                dist[adjNode]=edgeW+dis;
+                pq.push({edgeW+dis,adjNode});
+                ways[adjNode]=ways[node];
             }
+
+            else if(edgeW+dis==dist[adjNode])
+            {
+                ways[adjNode]=(ways[adjNode]+ways[node])%mod;
+            }
+            
         }
-        return ways[n-1];
     }
+    return ways[n-1]%mod;
+}
 };
