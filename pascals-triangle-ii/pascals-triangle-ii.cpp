@@ -15,6 +15,6 @@ public:
             }
         }
 
-        return ans.back();
+        return ans[n];
     }
 };
