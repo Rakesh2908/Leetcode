@@ -10,7 +10,11 @@ public:
 
         for(int i=0;i<=n/2;i++)
         {
-            nums[2*i]=nums[i];
+            if(2<=2*i && 2*i<=n)
+            {
+                nums[2*i]=nums[i];
+            }
+            
             if(2<=2*i+1 && 2*i+1<=n)
             {
                 nums[2*i+1]=nums[i]+nums[i+1];
