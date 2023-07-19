@@ -1,36 +1,20 @@
+				// \U0001f609\U0001f609\U0001f609\U0001f609Please upvote if it helps \U0001f609\U0001f609\U0001f609\U0001f609
 class Solution {
 public:
-    bool isSubsequence(string s, string t) 
-    {
-        int n = s.size();
-        int m = t.size();
-
-        if(n>m) return false;
+    bool isSubsequence(string s, string t) {
         
-        int dp[n+1][m+1];
-
-        //if(i==0||j==0)    return 0
-        for(int i=0;i<=n;i++)
-        {
-            dp[i][0]=0;
-        }
-
-        for(int j=0;j<=m;j++)
-        {
-            dp[0][j]=0;
-        }
-
-        for(int i=1;i<=n;i++)
-        {
-            for(int j=1;j<=m;j++)
-            {
-                if(s[i-1]==t[j-1])
-                    dp[i][j]=1+dp[i-1][j-1];
-                else
-                    dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
-            }
-        }
-
-        return (dp[n][m]==n);
+    int j = 0; // For index of str1 (or subsequence
+ 
+    // Traverse str2 and str1, and
+    // compare current character
+    // of str2 with first unmatched char
+    // of str1, if matched
+    // then move ahead in str1
+    for (int i = 0; i < t.length() && j < s.length(); i++)
+        if (s[j] == t[i])
+            j++;
+ 
+    // If all characters of str1 were found in str2
+    return (j == s.length());
     }
 };
