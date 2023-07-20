@@ -2,41 +2,25 @@ class Solution {
 public:
     int deleteAndEarn(vector<int>& nums) 
     {
-        int n = nums.size();
-        vector<int> dp(n + 1, 0);
-
-        sort(nums.begin(), nums.end());
-
-        unordered_map<int, int> mp;
-        for (auto num : nums) 
-        {
-            mp[num]++;
+        unordered_map<int, int> count; // To store the count of each value
+        for (int num : nums) {
+            count[num]++;
         }
 
-        nums.erase(unique(nums.begin(), nums.end()), nums.end());
+        int maxNum = *max_element(nums.begin(), nums.end()); // Find the maximum value in the input array
+        vector<int> dp(maxNum + 1, 0); // Create a DP array to store the maximum points earned up to each value
 
-        int earn1 = 0, earn2 = 0;
+        dp[1] = count[1]; // Initialize the DP array with the points earned for value 1
 
-        for (int i = 0; i < nums.size(); i++) 
-        {
-            int curr = nums[i] * mp[nums[i]];
-
-            if (i > 0 && nums[i] == nums[i - 1] + 1) 
-            {
-                int temp = earn2;
-                earn2 = max(curr + earn1, earn2);
-                earn1 = temp;
-            } 
-            
-            else 
-            {
-                int temp = earn2;
-                earn2 = curr + earn2;
-                earn1 = temp;
-            }
+        for (int i = 2; i <= maxNum; i++) {
+            // For each value i from 2 up to the maximum value in the input array
+            // Calculate the maximum points we can earn if we choose the current value i
+            // and add it to the points earned from i-2 (skipping the adjacent value to i)
+            // Compare it with the points earned from the previous value i-1, and take the maximum
+            dp[i] = max(i * count[i] + dp[i - 2], dp[i - 1]);
         }
 
-        return earn2;
+        return dp[maxNum]; // The final result will be stored in dp[maxNum], which represents the maximum points earned for the entire array
         
     }
 };
