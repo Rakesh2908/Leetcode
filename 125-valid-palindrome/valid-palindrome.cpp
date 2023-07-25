@@ -2,18 +2,19 @@ class Solution {
 public:
     bool isPalindrome(string s) 
     {
-        string str;
-        string t = "";
+        int l=0;
+        int r=s.size()-1;
 
-        for (int i = 0; i < s.size(); i++) 
+        while(l<r)
         {
-            if (isalnum(s[i])) // Check if the character is alphanumeric
-                str.push_back(tolower(s[i])); // Convert the character to lowercase and add to str
-        }
+            while(l<r && !isalnum(s[l]))    l++;
+            while(l<r && !isalnum(s[r]))    r--;
 
-        string temp = str;
-        reverse(temp.begin(), temp.end()); // Reverse the string
+            if(tolower(s[l]) != tolower(s[r]))  return false;
 
-        return (str == temp); // Check if str is equal to its reverse
+            l++;
+            r--;
+        }    
+        return true;
     }
 };
