@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int solve(vector<int>& nums, int sum1 , int sum2, bool turn ,int i, int j ){
+    bool solve(vector<int>& nums, int sum1 , int sum2, bool turn ,int i, int j ){
         if(i>j){
             if(sum1>=sum2)
                 return 1;
@@ -8,7 +8,8 @@ public:
             return 0;
         }
         
-        if(turn){
+        if(turn)
+        {
              return solve(nums,sum1+nums[i],sum2,false,i+1,j) || solve(nums,sum1+nums[j],sum2,false,i,j-1);
         }
         
