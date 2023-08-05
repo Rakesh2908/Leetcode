@@ -1,11 +1,18 @@
 class Solution {
 public:
-    int dp[20]{};
-    int numTrees(int n) {
-        if(n <= 1) return 1;
-        if(dp[n]) return dp[n];
-        for(int i = 1; i <= n; i++) 
-            dp[n] += numTrees(i-1) * numTrees(n-i);
+    int numTrees(int n) 
+    {
+        vector<int> dp(n+1);
+        dp[0] = dp[1] = 1;
+
+        for(int i = 2; i <= n; i++) 
+        {
+            //j->root node
+            for(int j = 1; j <= i; j++)
+            {    
+                dp[i] += dp[j-1] * dp[i-j];
+            }   
+        }        
         return dp[n];
     }
 };
