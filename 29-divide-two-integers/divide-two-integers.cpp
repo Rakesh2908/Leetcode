@@ -1,36 +1,19 @@
 class Solution {
 public:
-    int divide(int dividend, int divisor) 
-    {
-        if (divisor == 0) {
-            return INT_MAX;
+    int divide(int dividend, int divisor) {
+        if(dividend==INT_MIN){
+            if(divisor==-1) return INT_MAX;
+            else if(divisor<0) return 1+divide(dividend-divisor,divisor);
+            else return -1+divide(dividend+divisor,divisor);
         }
-        
-        if (dividend == 0) {
-            return 0;
-        }
-        
-        if (dividend == INT_MIN && divisor == -1) {
-            return INT_MAX;
-        }
-        
-        int sign = (dividend < 0) ^ (divisor < 0) ? -1 : 1;
-        long long ldividend = std::abs(static_cast<long long>(dividend));
-        long long ldivisor = std::abs(static_cast<long long>(divisor));
-        
-        long long quotient = 0;
-        while (ldividend >= ldivisor) {
-            long long tempDivisor = ldivisor, count = 1;
-            
-            while (ldividend >= (tempDivisor << 1)) {
-                tempDivisor <<= 1;
-                count <<= 1;
+        if(divisor==INT_MIN) return 0;
+        int a=abs(dividend), b=abs(divisor), ans=0;
+        for(int i=31;i>=0;i--){
+            if((a>>i)>=b){
+                a-=b<<i;
+                ans+=1<<i;
             }
-            
-            ldividend -= tempDivisor;
-            quotient += count;
         }
-        
-        return static_cast<int>(std::min(std::max(sign * quotient, static_cast<long long>(INT_MIN)), static_cast<long long>(INT_MAX)));
+        return (dividend>0)==(divisor>0)?ans:-ans;
     }
 };
