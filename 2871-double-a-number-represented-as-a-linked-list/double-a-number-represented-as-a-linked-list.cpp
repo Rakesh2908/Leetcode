@@ -9,41 +9,53 @@
  * };
  */
 class Solution {
-private:
-    ListNode* reverse(ListNode* head) {
+public:
+    ListNode* reverseL(ListNode* head) 
+    {
         ListNode* prev = NULL;
-        ListNode* cur = head;
-        ListNode* temp = NULL;
-        while(cur) {
-            temp = cur->next;
-            cur->next = prev;
-            prev = cur;
-            cur = temp;
+
+        while(head != NULL)
+        {
+            ListNode* next = head->next;
+            head->next=prev;
+            prev=head;
+            head=next;
         }
+
         return prev;
     }
-public:
-    ListNode* doubleIt(ListNode* head) {
-        if(!head) return NULL;
-        ListNode* head2 = reverse(head);
-        ListNode* dummy = new ListNode(0);
-        ListNode* temp = dummy;
-        int carry = 0;
-        while(head2 != NULL || carry) {
-            int sum = 0;
-            if(head2) {
-                sum += (head2->val * 2);
-                head2 = head2->next;
-            }
-            
-            sum += carry;
-            
-            carry = sum / 10;
-            ListNode* curr = new ListNode(sum % 10);
-            temp->next = curr;
-            temp = temp->next;
+
+    ListNode* doubleL(ListNode* head)
+    {
+        ListNode* prev=NULL;
+        ListNode* curr=head; // Initialize curr to head
+
+        int carry=0,sum=0;
+
+        while(curr != NULL) // This loop won't run because curr is NULL initially
+        {
+            sum = carry + (curr->val * 2);
+            carry = sum/10;
+            sum = sum%10;            
+
+            curr->val=sum;
+            prev=curr;
+            curr = curr->next;
         }
-        
-        return reverse(dummy->next);
+
+        if(carry>0)
+        {
+            prev->next = new ListNode(carry);
+        }
+
+        return head; // You should return 'head' instead of 'prev'
+    }
+
+    ListNode* doubleIt(ListNode* head) 
+    {
+        head = reverseL(head);
+        head = doubleL(head);
+
+        return reverseL(head);
     }
 };
