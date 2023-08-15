@@ -8,48 +8,41 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution 
+{
 public:
-    ListNode* createLinkedList(vector<int>& nums) 
-    {
-        ListNode* dummy = new ListNode(); // Create a dummy node to start the list
-        ListNode* current = dummy; // Pointer to the current node
-        
-        for (int num : nums) {
-            current->next = new ListNode(num); // Create a new node with the current number
-            current = current->next; // Move the current pointer forward
-        }
-        
-        return dummy->next; // Return the actual head of the linked list
-    }
-
     ListNode* partition(ListNode* head, int x) 
     {
-        vector<int>temp;
-        ListNode* curr=head;
+        ListNode* h1 = new ListNode();    
+        ListNode* h2 = new ListNode();
+        ListNode* h1_curr = h1; // Pointer         
+        ListNode* h2_curr = h2; // Pointer         
 
-        while(curr)
+        while (head) 
         {
-            if(curr->val < x)
+            if (head->val < x) 
             {
-                temp.push_back(curr->val);
+                h1_curr->next = new ListNode(head->val);
+                h1_curr = h1_curr->next;
+            } 
+            
+            else 
+            {
+                h2_curr->next = new ListNode(head->val);
+                h2_curr = h2_curr->next;
             }
 
-            curr=curr->next;
+            head = head->next;
         }
 
-        curr = head;
+        h1_curr->next = h2->next;
+        
+        ListNode* result = h1->next;
+        
+        // Clean up the dummy nodes
+        delete h1;
+        delete h2;
 
-        while(curr)
-        {
-            if(curr->val >= x)
-            {
-                temp.push_back(curr->val);
-            }
-
-            curr=curr->next;
-        }
-
-        return createLinkedList(temp);
+        return result;
     }
 };
