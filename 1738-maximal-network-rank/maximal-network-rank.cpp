@@ -9,7 +9,8 @@ public:
         {
             mp[it[0]]++;
             mp[it[1]]++;
-            linked[it[0]][it[1]] = linked[it[1]][it[0]] = true;
+            linked[it[0]][it[1]] = true;
+            linked[it[1]][it[0]] = true;
         }
 
         int maxi = 0;
