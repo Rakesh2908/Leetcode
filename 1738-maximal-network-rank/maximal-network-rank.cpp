@@ -2,14 +2,14 @@ class Solution {
 public:
     int maximalNetworkRank(int n, vector<vector<int>>& roads) 
     {
-        vector<int> degree(n, 0); // Store the degree of each city
-        vector<vector<bool>> linked(n, vector<bool>(n, false)); // Store the connection status between cities
+        unordered_map<int,int>mp;
+        vector<vector<bool>> linked(n, vector<bool>(n, false)); 
 
-        for (const auto& road : roads) 
+        for (auto it: roads) 
         {
-            degree[road[0]]++;
-            degree[road[1]]++;
-            linked[road[0]][road[1]] = linked[road[1]][road[0]] = true;
+            mp[it[0]]++;
+            mp[it[1]]++;
+            linked[it[0]][it[1]] = linked[it[1]][it[0]] = true;
         }
 
         int maxi = 0;
@@ -17,11 +17,12 @@ public:
         {
             for (int j = i + 1; j < n; ++j)
              {
-                int rank = degree[i] + degree[j];
+                int rank = mp[i] + mp[j];
 
+                //if there is already a link bw i and j
                 if (linked[i][j]) 
                 {
-                    rank--; // Deduct 1 from rank if cities are connected
+                    rank--; 
                 }
 
                 maxi = max(maxi, rank);
