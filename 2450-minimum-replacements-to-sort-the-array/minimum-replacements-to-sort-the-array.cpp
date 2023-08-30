@@ -1,26 +1,28 @@
+int fastio = [] {std::ios::sync_with_stdio(0); std::cin.tie(0); return 0; }();
 class Solution {
 public:
-    long long minimumReplacement(vector<int>& nums) {
-        long long answer = 0;
-        int n = nums.size();
+    long long minimumReplacement(vector<int>& nums) 
+    {
+        long long int i = 0, n = nums.size();
+        
+        long long int  prev = nums[n-1];       
+        
+        long long int res = 0;
+        for( i = n-2; i>=0 ;i--)
+        {
+            long long int times = (nums[i] / prev );
 
-        // Start from the second last element, as the last one is always sorted.
-        for (int i = n - 2; i >= 0; i--) {
-            // No need to break if they are already in order.
-            if (nums[i] <= nums[i + 1]) {
-                continue;
-            }
-
-            // Count how many elements are made from breaking nums[i].
-            long long numElements = ceil((nums[i] + nums[i + 1] - 1LL) / (nums[i + 1]));
-
-            // It requires numElements - 1 replacement operations.
-            answer += numElements - 1;
-
-            // Maximize nums[i] after replacement.
-            nums[i] = nums[i] / numElements;
+            if( (nums[i] %prev) != 0 ) 
+            { 
+                times += 1;
+                
+                prev  =  nums[i] / times;
+            }      
+            res +=  times - 1;
+                
+            
         }
-
-        return answer;
+            
+        return res;
     }
 };
