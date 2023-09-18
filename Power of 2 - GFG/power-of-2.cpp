@@ -13,17 +13,8 @@ class Solution{
     // Function to check if given number n is a power of two.
     bool isPowerofTwo(long long n){
         
-       unsigned int count=0;
-        
-        while(n>0)
-        {
-            n = n&(n-1);
-            count++;
-        }
-        
-        if(count==1) return true;
-        
-        return false;
+       if(n<=0) return false;
+        return ((n&(n-1))==0);
         
     }
 };
