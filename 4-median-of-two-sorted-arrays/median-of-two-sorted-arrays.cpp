@@ -1,36 +1,51 @@
-// Optimized Using: Two Pointer with Extra Space
-  // Time Complexity: O(m+n)
-  // Space Complexity: O(m+n)
 class Solution {
 public:
-    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        
-        // Create a single sorted by merging two sorted arrays
-        int n1=nums1.size();
-        int n2=nums2.size();
-        int i=0;
-        int j=0;
-        int lastindex=-1;
-             
-        // Initialize a new array
-           vector<int>v(n1+n2,0);
-        
-        while(i<n1&&j<n2)
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) 
+    {
+        int n = nums1.size() + nums2.size();
+        int ind1 = (n - 1) / 2;
+        int ind2 = n / 2;
+        int a = -1, b = -1;
+
+        int i = 0, j = 0;
+        int cnt = 0;
+
+        while (i < nums1.size() && j < nums2.size()) 
         {
-            if(nums1[i]<=nums2[j])
-                v[++lastindex]=nums1[i++];
-            else
-                v[++lastindex]=nums2[j++];
+            if (nums1[i] <= nums2[j]) 
+            {
+                if (cnt == ind1) a = nums1[i];
+                if (cnt == ind2) b = nums1[i];
+                i++;
+            } 
+
+            else 
+            {
+                if (cnt == ind1) a = nums2[j];
+                if (cnt == ind2) b = nums2[j];
+                j++;
+            }
+            cnt++;
         }
+
+        while (i < nums1.size() && cnt <= ind2) 
+        {
+            if (cnt == ind1) a = nums1[i];
+            if (cnt == ind2) b = nums1[i];
+            i++;
+            cnt++;
+        }
+
+        while (j < nums2.size() && cnt <= ind2) 
+        {
+            if (cnt == ind1) a = nums2[j];
+            if (cnt == ind2) b = nums2[j];
+            j++;
+            cnt++;
+        }
+
+        if (n % 2 == 1) return (double)b;
         
-        while(i<n1)
-            v[++lastindex]=nums1[i++];
-        while(j<n2)
-            v[++lastindex]=nums2[j++];
-        
-    // Return the result
-        int n=n1+n2;
-        return n%2?v[n/2]:(v[n/2]+v[n/2-1])/2.0;
-        
+        return ((double)a + (double)b) / 2.0;
     }
 };
