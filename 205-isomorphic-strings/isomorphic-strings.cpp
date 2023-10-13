@@ -1,24 +1,18 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        int hash[256]={0};
-        bool mappedT[256]={0};
-        if(s.length()!=t.length()){
+        if(s.length() != t.length()) {
             return false;
         }
-        for(int i=0;i<s.size();i++){
-            if(hash[s[i]]==0 || mappedT[t[i]]==0){
-                hash[s[i]]=t[i];
-                mappedT[t[i]]=1;
-            }
-        for(int i=0;i<s.size();i++){
-            if(hash[s[i]]!=t[i] && mappedT[t[i]]!=0){
-                return false;
-            }
+        char map_s[128] = { 0 };
+        char map_t[128] = { 0 };
+        int len = s.size();
+        for (int i = 0; i < len; ++i)
+        {
+            if (map_s[s[i]]!=map_t[t[i]]) return false;
+            map_s[s[i]] = i+1;
+            map_t[t[i]] = i+1;
         }
-        }
-        
-        return true;
-       
+        return true;    
     }
 };
