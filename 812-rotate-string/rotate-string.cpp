@@ -1,24 +1,14 @@
 class Solution {
 public:
-    bool rotateString(string s, string goal) 
+    bool rotateString(string p, string q) 
     {
-        if(s.length()!=goal.length())
-            return false;    
+         if(p.size() != q.size())       
+            return 0;     
 
-        for(int i=0;i<s.length();i++)
-        {
-            string temp=goal;
-
-            reverse(temp.begin(), temp.begin() + goal.length() - i);
+        string temp = p+p;    
+        if (temp.find(q) != -1)        
+            return 1; 
                 
-            reverse(temp.begin() + goal.length() - i, temp.end());
-
-            reverse(temp.begin(), temp.end());
-
-            if(temp == s)
-                return true;
-        }
-
-        return false;
+        return 0;
     }
 };
