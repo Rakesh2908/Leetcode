@@ -2,33 +2,29 @@ class Solution {
 public:
     string reverseWords(string s) 
     {
-        int n = s.size();
+        //i -> start of a word in the string
+        //j -> end of a word in the string
+        string result;
+        int i = 0;
+        int n = s.length();
 
-        stack<string> st;
-        string tmp = "";
-
-        // Iterate and store each word to the stack
-        for(int i=0; i<n; i++) 
+        while(i < n)
         {
-            if(s[i] != ' ')
-                tmp.push_back(s[i]);    
+            while(i < n && s[i] == ' ') i++;
 
-            if((i == n-1 || s[i] == ' ') && !tmp.empty())
-                st.push(tmp), tmp = "";
+            if(i >= n) break;
+
+            int j = i + 1;
+
+            while(j < n && s[j] != ' ') j++;
+
+            string sub = s.substr(i, j-i);
+
+            if(result.length() == 0) result = sub;
+            else result = sub + " " + result;
+            
+            i = j+1;
         }
-
-        // Pop each word one by one from the stack and append it to the output string "tmp"
-        while(!st.empty()) 
-        {
-            tmp.append(st.top()); 
-            st.pop();
-            tmp.push_back(' ');
-        }
-
-        // Remove the additional single space 
-        tmp.pop_back();
-        
-        return tmp;
+        return result;
     }
-
 };
