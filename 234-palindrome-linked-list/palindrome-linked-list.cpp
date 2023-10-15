@@ -5,12 +5,12 @@ public:
         if (!head || !head->next)
             return true;
 
-        string s = "", t = "";
         ListNode *slow = head, *fast = head;
+        stack<int> st;
 
         while (fast && fast->next) 
         {
-            s += to_string(slow->val);
+            st.push(slow->val);
             slow = slow->next;
             fast = fast->next->next;
         }
@@ -21,13 +21,13 @@ public:
 
         while (slow) 
         {
-            t += to_string(slow->val);
+            int top = st.top();
+            st.pop();
+            if (top != slow->val)
+                return false;
             slow = slow->next;
         }
 
-        // Reverse t and compare with s
-        reverse(t.begin(), t.end());
-
-        return s == t;
+        return true;
     }
 };
