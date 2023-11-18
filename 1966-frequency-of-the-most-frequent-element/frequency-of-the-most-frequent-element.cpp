@@ -1,16 +1,26 @@
-// OJ: https://leetcode.com/problems/frequency-of-the-most-frequent-element/
-// Author: github.com/lzl124631x
-// Time: O(NlogN)
-// Space: O(1)
 class Solution {
 public:
-    int maxFrequency(vector<int>& A, int k) {
-        sort(begin(A), end(A));
-        long i = 0, j = 0, N = A.size(), sum = 0;
-        for (; j < N; ++j) {
-            sum += A[j];
-            if ((j - i + 1) * A[j] - sum > k) sum -= A[i++];
+    int maxFrequency(vector<int>& nums, int k) 
+    {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        long long sum = 0;
+        int left = 0;
+        int result = 0;
+
+        for (int right = 0; right < n; ++right) 
+        {
+            sum += nums[right];
+
+            while ((long long)nums[right] * (right - left + 1) > sum + k) 
+            {
+                sum -= nums[left];
+                ++left;
+            }
+
+            result = max(result, right - left + 1);
         }
-        return j - i;
+
+        return result;
     }
 };
